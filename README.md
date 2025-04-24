@@ -1,5 +1,7 @@
 # Stack Switcher
 
+This repo is an example of how to use a Stack, and a StackSwitcher in Relm4.
+
 ![](./stack_switcher.png)
 
 This example showcast:
