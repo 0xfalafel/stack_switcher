@@ -46,15 +46,30 @@ impl SimpleComponent for StackApp {
 
                     add_titled: (
                         &gtk::Label::new(Some("PAGE 1")),
-                        Some("Hi mom!"),
+                        Some("page1"),
                         "Page 1"
                     ),
 
-                    add_titled: (
-                        &gtk::Label::new(Some("PAGE 2")),
-                        Some("Page 2"),
-                        "Page 2"
-                    ),
+                    add_child = &gtk::Box {
+                        set_orientation: gtk::Orientation::Vertical,
+                        set_halign: gtk::Align::Center,
+                        set_margin_all: 20,
+                        
+                        gtk::Label {
+                            set_label: "Hi mom!",
+                            set_margin_bottom: 20,
+                        },
+
+                        gtk::Button {
+                            set_label: "Go to page 1",
+
+                            connect_clicked => StackAppMsg::SwitchPage(0),
+                        },
+                    } -> {
+                        set_name: "page2",
+                        set_title: "page 2",
+                    },
+
                 }
             }
         }
