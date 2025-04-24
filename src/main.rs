@@ -46,11 +46,24 @@ impl SimpleComponent for StackApp {
                     set_transition_type: gtk::StackTransitionType::SlideLeftRight,
                     set_transition_duration: 200,
 
-                    add_titled: (
-                        &gtk::Label::new(Some("PAGE 1")),
-                        Some("page1"),
-                        "Page 1"
-                    ),
+                    add_child = &gtk::Box {
+                        set_orientation: gtk::Orientation::Vertical,
+                        set_halign: gtk::Align::Center,
+                        set_margin_all: 20,
+                        
+                        gtk::Label {
+                            set_label: "Welcome to page 1",
+                            set_margin_bottom: 20,
+                        },
+
+                        gtk::Button {
+                            set_label: "Go to page 2",
+                            connect_clicked => StackAppMsg::SwitchPage(2),
+                        },
+                    } -> {
+                        set_name: "1",
+                        set_title: "page 1",
+                    },
 
                     add_child = &gtk::Box {
                         set_orientation: gtk::Orientation::Vertical,
@@ -58,17 +71,16 @@ impl SimpleComponent for StackApp {
                         set_margin_all: 20,
                         
                         gtk::Label {
-                            set_label: "Hi mom!",
+                            set_label: "This is page 2!",
                             set_margin_bottom: 20,
                         },
 
                         gtk::Button {
                             set_label: "Go to page 1",
-
-                            connect_clicked => StackAppMsg::SwitchPage(0),
+                            connect_clicked => StackAppMsg::SwitchPage(1),
                         },
                     } -> {
-                        set_name: "page2",
+                        set_name: "2",
                         set_title: "page 2",
                     },
 
@@ -82,10 +94,10 @@ impl SimpleComponent for StackApp {
         root: Self::Root,
         _sender: ComponentSender<Self>,
     ) -> ComponentParts<Self> {
-        let mut model = StackApp::default();
         let widgets = view_output!();
+
+        let mut model = StackApp::default();
         model.stack = widgets.stack.clone();
-        model.stack.set_visible_child_name("page2");
 
         ComponentParts { model, widgets }
     }
@@ -95,19 +107,10 @@ impl SimpleComponent for StackApp {
             StackAppMsg::SwitchPage(page) => {
                 println!("clicked page {}", page);
                 self.current_page = page;
-                self.stack.set_visible_child_name("page1");
+                self.stack.set_visible_child_name(&page.to_string());
             }
         }
     }
-
-    // fn post_update(&mut self, widgets: &mut Self::Widgets, _sender: ComponentSender<Self>) {
-    //     // Update the visible page based on current_page
-    //     match self.current_page {
-    //         0 => widgets.stack.set_visible_child_name("page1"),
-    //         1 => widgets.stack.set_visible_child_name("page2"),
-    //         _ => unreachable!(),
-    //     }
-    // }
 }
 
 fn main() {
