@@ -6,6 +6,7 @@ use relm4::{
 #[derive(Default)]
 struct StackApp {
     current_page: u8,
+    stack: gtk::Stack,
 }
 
 #[derive(Debug)]
@@ -21,6 +22,7 @@ impl SimpleComponent for StackApp {
     type Widgets = StackAppWidgets;
 
     view! {
+        #[root]
         gtk::ApplicationWindow {
             set_default_size: (300, 200),
 
@@ -80,8 +82,11 @@ impl SimpleComponent for StackApp {
         root: Self::Root,
         _sender: ComponentSender<Self>,
     ) -> ComponentParts<Self> {
-        let model = StackApp::default();
+        let mut model = StackApp::default();
         let widgets = view_output!();
+        model.stack = widgets.stack.clone();
+        model.stack.set_visible_child_name("page2");
+
         ComponentParts { model, widgets }
     }
 
@@ -90,6 +95,7 @@ impl SimpleComponent for StackApp {
             StackAppMsg::SwitchPage(page) => {
                 println!("clicked page {}", page);
                 self.current_page = page;
+                self.stack.set_visible_child_name("page1");
             }
         }
     }
