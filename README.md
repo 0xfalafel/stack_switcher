@@ -1,6 +1,6 @@
 # Stack Switcher
 
-This repo is an example of how to use a Stack, and a StackSwitcher in Relm4.
+This repo is an __example__ of how to use a `Stack`, and a `StackSwitcher` in _Relm4_.
 
 ![](./stack_switcher.png)
 
