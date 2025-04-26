@@ -22,7 +22,6 @@ impl SimpleComponent for StackApp {
     type Widgets = StackAppWidgets;
 
     view! {
-        #[root]
         gtk::ApplicationWindow {
             set_default_size: (300, 200),
 
@@ -36,55 +35,50 @@ impl SimpleComponent for StackApp {
                 },
             },
 
-            gtk::Box {
-                set_orientation: gtk::Orientation::Vertical,
-                set_spacing: 6,
-                set_margin_all: 12,
+            
+            #[name = "stack"]
+            gtk::Stack {
+                set_transition_type: gtk::StackTransitionType::SlideLeftRight,
+                set_transition_duration: 200,
 
-                #[name = "stack"]
-                gtk::Stack {
-                    set_transition_type: gtk::StackTransitionType::SlideLeftRight,
-                    set_transition_duration: 200,
-
-                    add_child = &gtk::Box {
-                        set_orientation: gtk::Orientation::Vertical,
-                        set_halign: gtk::Align::Center,
-                        set_margin_all: 20,
-                        
-                        gtk::Label {
-                            set_label: "Welcome to page 1",
-                            set_margin_bottom: 20,
-                        },
-
-                        gtk::Button {
-                            set_label: "Go to page 2",
-                            connect_clicked => StackAppMsg::SwitchPage(2),
-                        },
-                    } -> {
-                        set_name: "1",
-                        set_title: "page 1",
+                add_child = &gtk::Box {
+                    set_orientation: gtk::Orientation::Vertical,
+                    set_halign: gtk::Align::Center,
+                    set_margin_all: 20,
+                    
+                    gtk::Label {
+                        set_label: "Welcome to page 1",
+                        set_margin_bottom: 20,
                     },
 
-                    add_child = &gtk::Box {
-                        set_orientation: gtk::Orientation::Vertical,
-                        set_halign: gtk::Align::Center,
-                        set_margin_all: 20,
-                        
-                        gtk::Label {
-                            set_label: "This is page 2!",
-                            set_margin_bottom: 20,
-                        },
+                    gtk::Button {
+                        set_label: "Go to page 2",
+                        connect_clicked => StackAppMsg::SwitchPage(2),
+                    },
+                } -> {
+                    set_name: "1",
+                    set_title: "page 1",
+                },
 
-                        gtk::Button {
-                            set_label: "Go to page 1",
-                            connect_clicked => StackAppMsg::SwitchPage(1),
-                        },
-                    } -> {
-                        set_name: "2",
-                        set_title: "page 2",
+                add_child = &gtk::Box {
+                    set_orientation: gtk::Orientation::Vertical,
+                    set_halign: gtk::Align::Center,
+                    set_margin_all: 20,
+                    
+                    gtk::Label {
+                        set_label: "This is page 2!",
+                        set_margin_bottom: 20,
                     },
 
-                }
+                    gtk::Button {
+                        set_label: "Go to page 1",
+                        connect_clicked => StackAppMsg::SwitchPage(1),
+                    },
+                } -> {
+                    set_name: "2",
+                    set_title: "page 2",
+                },
+
             }
         }
     }
